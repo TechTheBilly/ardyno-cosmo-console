@@ -5,13 +5,15 @@ int dynamixelHandle(DynamixelID id, DynamixelInterface* interface)
 
     DynamixelMotor device = DynamixelMotor(*interface, id);
 
+    char orderC[100];
     std::string order = "";
     std::vector<std::string> args = std::vector<std::string>();
 
     while(order.compare("exit"))
     {
         std::cout << std::endl << "CosmOS Dynamixel Console <Device " << (int)id << "> : ";
-        std::cin >> order;
+        std::cin.getline(orderC, sizeof(orderC));
+        order = std::string(orderC);
         std::cout << std::endl;
         args.clear();
         getArgs(order, ' ', args);
@@ -86,6 +88,7 @@ void getArgs(const std::string &s, char delim, std::vector<std::string> &elems)
     std::string item;
 
     while (getline(ss, item, delim)) {
+        std::cout << item << std::endl;
         elems.push_back(item);
     }
 }

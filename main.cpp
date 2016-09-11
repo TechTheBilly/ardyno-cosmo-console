@@ -16,13 +16,15 @@ int main(int argc, char *argv[])
     DynamixelInterface *interface=createSerialInterface(serialPort);
     interface->begin(9600);
 
+    char orderC[100];
     std::string order = "";
     std::vector<std::string> args = std::vector<std::string>();
 
     while(order.compare("exit"))
     {
         std::cout << std::endl << "CosmOS Dynamixel Console : ";
-        std::cin >> order;
+        std::cin.getline(orderC, sizeof(orderC));
+        order = std::string(orderC);
         std::cout << std::endl;
         args.clear();
         getArgs(order, ' ', args);
