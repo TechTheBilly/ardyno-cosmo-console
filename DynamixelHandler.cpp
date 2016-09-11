@@ -15,6 +15,9 @@ int dynamixelHandle(DynamixelID id, DynamixelInterface* interface)
         std::cin.getline(orderC, sizeof(orderC));
         order = std::string(orderC);
         std::cout << std::endl;
+
+        if(!order.compare("exit")) continue;
+
         args.clear();
         getArgs(order, ' ', args);
 
@@ -67,6 +70,58 @@ int dynamixelHandle(DynamixelID id, DynamixelInterface* interface)
             {
                 std::cout << "BAD STATE : should be 'on' or 'off' " << std::endl;
             }
+            continue;
+        }
+
+        else if(!args[0].compare("settorque"))
+        {
+            if(args.size() != 2)
+            {
+                std::cout << "USAGE : settorque <on/off> ; Sets the torque or not" << std::endl;
+                continue;
+            }
+
+            if(!args[1].compare("on"))
+            {
+                device.enableTorque(true);
+            }
+            else if(!args[1].compare("off"))
+            {
+                device.enableTorque(false);
+            }
+            else
+            {
+                std::cout << "BAD STATE : should be 'on' or 'off' " << std::endl;
+            }
+            continue;
+        }
+
+        else if(!args[0].compare("setspeed"))
+        {
+            if(args.size() != 2)
+            {
+                std::cout << "USAGE : setspeed <value> ; Sets the specified angular speed [-255;255] " << std::endl;
+                continue;
+            }
+
+            int goal;
+            try
+            {
+                goal = std::stoi(args[1]);
+            }
+            catch (std::exception const &e)
+            {
+                std::cout << "BAD SPEED ; speed must be between -255 and 255" << std::endl;
+                continue;
+            }
+
+            if(goal < -255 || goal > 255)
+            {
+                std::cout << "BAD SPEED ; speed must be between -255 and 255" << std::endl;
+                continue;
+            }
+
+            device.speed((int16_t) goal);
             continue;
         }
 

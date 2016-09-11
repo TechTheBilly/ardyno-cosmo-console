@@ -26,6 +26,9 @@ int main(int argc, char *argv[])
         std::cin.getline(orderC, sizeof(orderC));
         order = std::string(orderC);
         std::cout << std::endl;
+
+        if(!order.compare("exit")) continue;
+
         args.clear();
         getArgs(order, ' ', args);
 
